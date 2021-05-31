@@ -298,7 +298,6 @@ let readKarmaCommand = function(inputChar) {
 		case ',': {	//Go down one line, start at beginning
 			gridPosList[gridLine] ++;
 			gridLine++;
-			console.log(gridLine+" "+input.length);
 			if (gridLine >= input.length) {
 				terminate = true;
 				exitMessage = "ERROR: Line index out of bounds. Line " + gridLine + " does not exist.";
