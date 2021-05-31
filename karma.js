@@ -146,7 +146,7 @@ let readKarmaCommand = function(inputChar) {
 				exitMessage = "ERROR: Stack underflow. Program terminated at line " + gridLine + ".";
 				break;
 			}
-			pNum = stack[stack.length-1];
+			pNum = ~stack[stack.length-1];
 			stack.pop();
 			stack.push(pNum);
 			break;
@@ -157,7 +157,7 @@ let readKarmaCommand = function(inputChar) {
 				exitMessage = "ERROR: Stack underflow. Program terminated at line " + gridLine + ".";
 				break;
 			}
-			pNum = stack[stack.length-1];
+			pNum = !stack[stack.length-1];
 			stack.pop();
 			stack.push(pNum);
 			break;
