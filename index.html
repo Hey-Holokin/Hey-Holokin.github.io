@@ -2,14 +2,20 @@
 <html>
 
 <head>
+	<link type="text/css" rel="stylesheet" href="style.css" />
 	<script type="text/javascript" src="karma.js"></script>
 </head>
 
 <body>
-	<form action="interpretKarma()">
-		<textarea name="karma-in" id="karma-in"></textarea>
-		<input type="button" value="Submit" onclick="interpretKarma()"></input>
-	</form>
+	<div id="karma">
+		<textarea name="karma-in" id="karma-in">
+072,101,108,108,111,032,119,111,114,108,100,033,
+}}}]]]55+*+55+*+:'</textarea>
+		<div id="buttons">
+			<button type="button" id="execute" value="Execute" onclick="interpretKarma();">Execute</button>
+			<button type="button" id="debug" value="Debug" onclick="interpretKarma(true);">Debug</button>
+		</div>
+	</div>
 	<p id="karma-out" style="white-space: pre;"></p>
 </body>
 
