@@ -44,7 +44,7 @@ let interpretKarma = function(debug = false) {
 	readKarmaCommand(inputChar, debug);
 };
 let readKarmaCommand = function(inputChar, debug) {
-	if (debug) console.log("Reading command");
+	console.log("Reading command " + inputChar);
 	let pNum = 0;
 	switch (inputChar) {
 		//Operands [COMPLETE]
@@ -329,7 +329,7 @@ let readKarmaCommand = function(inputChar, debug) {
 				exitMessage = "ERROR: Stack underflow. Program terminated at line " + gridLine + ", character " + gridPosList[gridLine] + ".";
 				break;
 			}
-			if (debug) outputString[3] += String.fromCharCode(stack[stack.length-1]);
+			if (debug) outputString[3] += stack[stack.length-1];
 			else output.innerHTML += stack[stack.length-1];
 			stack.pop();
 			if (debug) outputString[1] = "Stack: " + stack.join(" ");
@@ -392,22 +392,26 @@ let readKarmaCommand = function(inputChar, debug) {
 		if (gridPosList[gridLine] < input[gridLine].length) {
 			if (awaitInput) {
 				let getch = function(e) {
-					stack.push(e.keyCode);
-					if (debug) {
-						outputString[1] = "Stack: " + stack.join(" ");
-						document.addEventListener("keydown", waitSpace);
-					} else {
-						readKarmaCommand(input[gridLine][gridPosList[gridLine]], true);
-					}
-					awaitInput = false;
 					document.removeEventListener("keypress", getch);
+					stack.push(e.keyCode);
+					console.log("Listened for key press, received keycode " + e.keyCode);
+					console.log(stack.join(" "));
+					if (debug) {
+						outputString[0] = "Press space to advance.";
+						outputString[1] = "Stack: " + stack.join(" ");
+						output.innerHTML = outputString.join("\n");
+						document.addEventListener("keyup", waitSpace);
+					} else {
+						readKarmaCommand(input[gridLine][gridPosList[gridLine]], false);
+					}
 				}
+				awaitInput = false;
+				if (debug) outputString[0] = "Awaiting user input...";
 				document.addEventListener("keypress", getch);
 			} else {
-				if (!debug) readKarmaCommand(input[gridLine][gridPosList[gridLine]]);
-				else {
-					document.addEventListener("keydown", waitSpace);
-				}
+				console.log(stack.join(" "));
+				if (debug) document.addEventListener("keyup", waitSpace);
+				else readKarmaCommand(input[gridLine][gridPosList[gridLine]]);
 			}
 		} else {
 			terminate = true;
@@ -424,7 +428,7 @@ let readKarmaCommand = function(inputChar, debug) {
 }
 let waitSpace = function(e) {
 	if (e.keyCode == 32) {
-		document.removeEventListener("keydown", waitSpace);
+		document.removeEventListener("keyup", waitSpace);
 		console.log("Success");
 		readKarmaCommand(input[gridLine][gridPosList[gridLine]], true);
 	}
