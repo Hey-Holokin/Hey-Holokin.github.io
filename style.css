@@ -1,0 +1,91 @@
+@font-face {
+	font-family: ubuntu-mono;
+	font-weight: normal;
+	font-style: normal;
+	src: url("fonts/UbuntuMono-Regular.ttf");
+}
+@font-face {
+	font-family: ubuntu-mono;
+	font-weight: bold;
+	font-style: normal;
+	src: url("fonts/UbuntuMono-Bold.ttf");
+}
+@font-face {
+	font-family: ubuntu-mono;
+	font-weight: normal;
+	font-style: italic;
+	src: url("fonts/UbuntuMono-Italic.ttf");
+}
+@font-face {
+	font-family: ubuntu-mono;
+	font-weight: bold;
+	font-style: italic;
+	src: url("fonts/UbuntuMono-BoldItalic.ttf");
+}
+body {
+	box-sizing: border-box;
+	margin: 0;
+	display: flex;
+	flex-direction: row;
+	overflow-y: hidden;
+	--karma-blue: #97B5E5;
+	--karma-red: #E29595;
+	--karma-error-red: #601B1B;
+}
+#karma {
+	display: grid;
+	width: 50vw;
+	height: 100vh;
+	grid-template-rows: calc(100vh - 4em) 4em;
+	grid-template-columns: 50vw;
+}
+#karma-in {
+	font-family: ubuntu-mono;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	resize: none;
+	background-color: #A5748B;
+	color: #4C0B2A;
+	padding: 1em;
+}
+#buttons {
+	width: 100%;
+	height: 100%;
+	display: grid;
+	grid-template-columns: 25vw 25vw;
+}
+#execute, #debug {
+	display: inline;
+	margin: 0;
+	padding: 0;
+	border: none;
+	width: 100%;
+	height: 100%;
+	font-family: ubuntu-mono;
+	background-color: #DFDFDF;
+}
+#execute:hover, #debug:hover {
+	background-color: #EFEFEF;
+}
+#execute:active, #debug:active {
+	background-color: #CFCFCF;
+}
+#execute {
+	border: 4px solid var(--karma-blue);
+}
+#debug {
+	border: 4px solid var(--karma-red);
+}
+#karma-out {
+	font-family: ubuntu-mono;
+	display: inline-block;
+	width: 50vw;
+	height: 100vh;
+	background-color: #507250;
+	margin: 0;
+	padding: 1em;
+	color: #86CE86;
+}
