@@ -4,6 +4,25 @@
 //To operate, create two elements: A <textarea> with the ID "karma-in" containing the program, and a text element with the ID <karma-out>. Then, simply call the interpretKarma() function from wherever you wish.
 //TODO: Switch to keydown event type for processing of ? instruction, program functional key handler.
 
+let samplePrograms = {
+	helloWorld:		"072,101,108,108,111,032,119,111,114,108,100,033,\n" +
+					"}}}]]]55+*+55+*+:'",
+	
+	cat:			"?}85+=@,{:<\n" +
+					"\n" +
+					"Empty line above is required. Lines here and below are functionally comments, the interpreter never reaches them.\n" +
+					"Pressing Enter ends the program.",
+	
+	asciiConverter:	"?}85+=@,55+{\\[%\\195*-}}]\\[-[55+]/[55+]\\[%}55+]/}]:{[{[{[{[<\n" +
+					"{[85+\\::,\n" +
+					"85+=@,{;{;{;{:<\n" +
+					"85+:,\n" +
+					"125,053,053,043,042,123,043,125,053,053,043,092,042,042,123,043,058,039,\n" +
+					"}55+*{+}55+\\**{+:'\n" +
+					"\n" +
+					"This program takes keyboard input, then translates it into Karma code which outputs that keyboard input.\n"
+};
+
 let input;
 let output;
 let stack;
@@ -44,7 +63,17 @@ let interpretKarma = function(debug = false) {
 	readKarmaCommand(inputChar, debug);
 };
 let readKarmaCommand = function(inputChar, debug) {
-	console.log("Reading command " + inputChar);
+	if (debug) {
+		let karmaIPs = document.getElementById("karma-ips");
+		karmaIPs.innerHTML = "";
+		for (let i=0; i<input.length; i++) {
+			let newElement = "<span";
+			
+			if (i == gridLine) newElement += ' id="karma-ip-active"';
+			newElement += ">" + "&#8194;".repeat(gridPosList[i]) + "&#9608;" + "&#8194;".repeat(Math.max(input[i].length - gridPosList[i] - 1, 0)) + "\n</span>";
+			karmaIPs.innerHTML += newElement;
+		}
+	}
 	let pNum = 0;
 	switch (inputChar) {
 		//Operands [COMPLETE]
@@ -158,7 +187,7 @@ let readKarmaCommand = function(inputChar, debug) {
 				exitMessage = "ERROR: Stack underflow. Program terminated at line " + gridLine + ", character " + gridPosList[gridLine] + ".";
 				break;
 			}
-			pNum = ~stack[stack.length-1];
+			pNum = 255&(~stack[stack.length-1]);
 			stack.pop();
 			stack.push(pNum);
 			if (debug) outputString[1] = "Stack: " + stack.join(" ");
@@ -317,8 +346,9 @@ let readKarmaCommand = function(inputChar, debug) {
 				exitMessage = "ERROR: Stack underflow. Program terminated at line " + gridLine + ", character " + gridPosList[gridLine] + ".";
 				break;
 			}
-			if (debug) outputString[3] += String.fromCharCode(stack[stack.length-1]);
-			else output.innerHTML += String.fromCharCode(stack[stack.length-1]);
+			let outChar = String.fromCodePoint(stack[stack.length-1]);
+			if (debug) outputString[3] += outChar;
+			else output.innerHTML += outChar;
 			stack.pop();
 			if (debug) outputString[1] = "Stack: " + stack.join(" ");
 			break;
@@ -382,10 +412,13 @@ let readKarmaCommand = function(inputChar, debug) {
 	}
 	
 	if (terminate) {
-		output.innerHTML += '\n\n<span style="color: var(--karma-error-red);">' + exitMessage + "</span>";
+		let exitElement = '\n\n<span style="color: var(--karma-error-red);">' + exitMessage + "</span>";
+		if (debug) outputString[3] += exitElement;
+		else output.innerHTML += exitElement;
 		document.getElementById("karma-in").disabled = false;
 		document.getElementById("execute").disabled = false;
 		document.getElementById("debug").disabled = false;
+		document.getElementById("karma-ips").innerHTML = "";
 	} else {
 		gridPosList[gridLine]++;
 		
@@ -394,13 +427,11 @@ let readKarmaCommand = function(inputChar, debug) {
 				let getch = function(e) {
 					document.removeEventListener("keypress", getch);
 					stack.push(e.keyCode);
-					console.log("Listened for key press, received keycode " + e.keyCode);
-					console.log(stack.join(" "));
 					if (debug) {
 						outputString[0] = "Press space to advance.";
 						outputString[1] = "Stack: " + stack.join(" ");
 						output.innerHTML = outputString.join("\n");
-						document.addEventListener("keyup", waitSpace);
+						document.addEventListener("keypress", waitSpace);
 					} else {
 						readKarmaCommand(input[gridLine][gridPosList[gridLine]], false);
 					}
@@ -409,8 +440,7 @@ let readKarmaCommand = function(inputChar, debug) {
 				if (debug) outputString[0] = "Awaiting user input...";
 				document.addEventListener("keypress", getch);
 			} else {
-				console.log(stack.join(" "));
-				if (debug) document.addEventListener("keyup", waitSpace);
+				if (debug) document.addEventListener("keypress", waitSpace);
 				else readKarmaCommand(input[gridLine][gridPosList[gridLine]]);
 			}
 		} else {
@@ -421,6 +451,7 @@ let readKarmaCommand = function(inputChar, debug) {
 			document.getElementById("karma-in").disabled = false;
 			document.getElementById("execute").disabled = false;
 			document.getElementById("debug").disabled = false;
+			document.getElementById("karma-ips").innerHTML = "";
 		}
 	}
 	
@@ -428,8 +459,7 @@ let readKarmaCommand = function(inputChar, debug) {
 }
 let waitSpace = function(e) {
 	if (e.keyCode == 32) {
-		document.removeEventListener("keyup", waitSpace);
-		console.log("Success");
+		document.removeEventListener("keypress", waitSpace);
 		readKarmaCommand(input[gridLine][gridPosList[gridLine]], true);
 	}
 }
