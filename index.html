@@ -3,9 +3,10 @@
 
 <head>
 	<link type="text/css" rel="stylesheet" href="style.css" />
+	<script type="text/javascript" src="index.js"></script>
 	<script type="text/javascript" src="karma.js"></script>
 	<meta property="og:title" value="Karma Interpreter" />
-	<meta property="og:description" value="Interpreter for the esoteric Turing Tarpit programming language Karma, by revcompgeek" />
+	<meta property="og:description" value="Holokin's JavaScript interpreter for Karma, an esoteric Turing Tarpit programming language by revcompgeek" />
 	<meta property="og:image" value="http://hey-holokin.github.io/Karma.png" />
 	<meta property="og:image:secure_url" value="https://hey-holokin.github.io/Karma.png" />
 	<meta property="og:type" value="website" />
@@ -13,16 +14,42 @@
 </head>
 
 <body>
+	<header>
+		<button type="button" id="menu-btn" class="karma-btn" onclick="animateMenu(!isIn);">
+			<div></div>
+			<div></div>
+			<div></div>
+		</button>
+		<h1 style="margin-left: 12pt;">Karma Interpreter, by Holokin</h1>
+	</header>
+	<div id="menu">
+		<h2>Sample Programs</h2>
+		<sep></sep>
+		<a href="#menu-btn" onclick="document.getElementById('karma-in').value = samplePrograms.helloWorld; animateMenu(!isIn)"><h4>Hello World</h4></a>
+		<sep></sep>
+		<a href="#menu-btn" onclick="document.getElementById('karma-in').value = samplePrograms.cat; animateMenu(!isIn)"><h4>Cat</h4></a>
+		<sep></sep>
+		<a href="#menu-btn" onclick="document.getElementById('karma-in').value = samplePrograms.asciiConverter; animateMenu(!isIn)"><h4>Input to Karma String Output Converter</h4></a>
+		<sep></sep>
+		<h2>Accessibility</h2>
+		<sep></sep>
+		<a href="#menu-btn" onclick="switchContrast(!highContrast); animateMenu(!isIn);"><h4>High Contrast I/O</h4></a>
+		<sep></sep>
+		
+	</div>
 	<div id="karma">
-		<textarea name="karma-in" id="karma-in">
+		<div id="karma-in-container">
+			<div id="karma-ips"></div>
+			<textarea name="karma-in" id="karma-in">
 072,101,108,108,111,032,119,111,114,108,100,033,
 }}}]]]55+*+55+*+:'</textarea>
-		<div id="buttons">
-			<button type="button" id="execute" value="Execute" onclick="interpretKarma();">Execute</button>
-			<button type="button" id="debug" value="Debug" onclick="interpretKarma(true);">Debug</button>
 		</div>
+		<div id="buttons">
+			<button type="button" id="execute" class="karma-btn" onclick="interpretKarma();">Execute</button>
+			<button type="button" id="debug" class="karma-btn" onclick="interpretKarma(true);">Debug</button>
+		</div>
+		<p id="karma-out" style="white-space: pre;"></p>
 	</div>
-	<p id="karma-out" style="white-space: pre;"></p>
 </body>
 
 </html>
