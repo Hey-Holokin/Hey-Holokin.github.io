@@ -22,36 +22,115 @@
 	font-style: italic;
 	src: url("fonts/UbuntuMono-BoldItalic.ttf");
 }
-body {
+* {
 	box-sizing: border-box;
+}
+body {
 	margin: 0;
 	display: flex;
 	flex-direction: row;
-	overflow-y: hidden;
+	font-family: ubuntu-mono;
 	--karma-blue: #97B5E5;
 	--karma-red: #E29595;
 	--karma-error-red: #601B1B;
 }
-#karma {
-	display: grid;
-	width: 50vw;
-	height: 100vh;
-	grid-template-rows: calc(100vh - 4em) 4em;
-	grid-template-columns: 50vw;
+header {
+	width: 100vw;
+	height: 36pt;
+	background-color: var(--karma-blue);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	font-weight: bold;
 }
-#karma-in {
+#menu-btn {
+	width: 36pt;
+	height: 36pt;
+	padding: 8pt;
+	border: none;
+}
+#menu-btn>div {
+	background-color: black;
+	width: 20pt;
+	height: 4pt;
+	margin-bottom: 4pt;
+	border-radius: 2pt;
+}
+#menu {
+	position: absolute;
+	z-index: 1000;
+	padding: 12pt;
+	top: 36pt;
+	right: 100vw;
+	width: 50vw;
+	height: calc(100vh - 36pt);
+	background-color: #CFCFCF;
+}
+#menu>a {
+	text-decoration: none;
+}
+#menu>a>h4 {
+	color: #5F5F5F;
+	margin: 6pt 0pt 0pt 12pt;
+}
+sep {
+	display: inline-block;
+	padding: 0;
+	width: 100%;
+	height: 1px;
+	background-color: #9F9F9F;
+}
+#karma {
+	position: absolute;
+	top: 36pt;
+	display: grid;
+	width: 100vw;
+	height: calc(100vh - 36pt);
+	grid-template-rows: calc(100vh - 84pt) 48pt;
+	grid-template-columns: 50vw 50vw;
+	grid-template-areas:	'input		output'
+							'buttons	output'
+}
+#karma-in-container {
+	position: absolute;
+	grid-area: input;
 	font-family: ubuntu-mono;
-	border: 0;
 	margin: 0;
 	padding: 0;
 	width: 100%;
 	height: 100%;
-	resize: none;
 	background-color: #A5748B;
+}
+#karma-ips {
+	position: absolute;
+	word-break: break-all;
+	margin: 0;
+	padding: 12pt;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0);
+	color: rgba(255, 127, 0, 1);
+}
+#karma-ips>span {
+	white-space: pre-wrap;
+}
+#karma-ip-active {
+	color: yellow;
+}
+#karma-in {
+	position: absolute;
+	border: 0;
+	margin: 0;
+	padding: 12pt;
+	width: 100%;
+	height: 100%;
+	font-family: ubuntu-mono;
+	resize: none;
+	background-color: rgba(0, 0, 0, 0);
 	color: #4C0B2A;
-	padding: 1em;
 }
 #buttons {
+	grid-area: buttons;
 	width: 100%;
 	height: 100%;
 	display: grid;
@@ -65,12 +144,14 @@ body {
 	width: 100%;
 	height: 100%;
 	font-family: ubuntu-mono;
+}
+.karma-btn {
 	background-color: #DFDFDF;
 }
-#execute:hover, #debug:hover {
+.karma-btn:hover {
 	background-color: #EFEFEF;
 }
-#execute:active, #debug:active {
+.karma-btn:active {
 	background-color: #CFCFCF;
 }
 #execute {
@@ -80,12 +161,21 @@ body {
 	border: 4px solid var(--karma-red);
 }
 #karma-out {
+	grid-area: output;
 	font-family: ubuntu-mono;
 	display: inline-block;
 	width: 50vw;
-	height: 100vh;
+	height: 100%;
 	background-color: #507250;
 	margin: 0;
-	padding: 1em;
+	padding: 12pt;
 	color: #86CE86;
+}
+@keyframes menu-anim-in {
+	from {right: 100vw;}
+	to {right: 50vw;}
+}
+@keyframes menu-anim-out {
+	from {right: 50vw;}
+	to {right: 100vw;}
 }
